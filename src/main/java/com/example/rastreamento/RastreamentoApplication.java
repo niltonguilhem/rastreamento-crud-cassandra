@@ -14,7 +14,7 @@ public class RastreamentoApplication {
 	private static Logger logger = LoggerFactory.getLogger(RastreamentoApplication.class);
 
 	public static void main(String[] args)throws NamingException, JMXServerErrorException {
-		logger.info("Iniciando a api controle de vagas");
+		logger.info("Iniciando a API de rastreamento de clientes ");
 		SpringApplication.run(RastreamentoApplication.class, args);
 		logger.info("API de Rastreamento de Clientes iniciada e pronta para receber requisições");
 	}
