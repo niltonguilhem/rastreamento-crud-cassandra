@@ -59,8 +59,9 @@ public class RastreamentoController {
     }
 
    @PostMapping
-    public ResponseEntity<ClientesResponse> postCarro(@RequestBody ClientesRequest clientesRequest){
-       logger.info("m=postClientes - status=start");
+    public ResponseEntity<ClientesResponse> postCarro(@RequestBody ClientesRequest clientesRequest,
+                                                      @RequestHeader(value = "Partner")String Partner){
+       logger.info("m=postClientes - status=start " + Partner);
         Clientes clientes = service.save(new Clientes()
                 .withBuilderId(UUID.randomUUID())
                 .withBuilderBairro(clientesRequest.getBairro())
@@ -78,14 +79,15 @@ public class RastreamentoController {
                 .withBuilderNumero_logradouro(clientes.getNumero_logradouro())
                 .withBuilderRua(clientes.getRua())
                 .withBuilderTelefone(clientes.getTelefone());
-       logger.info("m=postClientes - status=finish");
+       logger.info("m=postClientes - status=finish " + Partner);
         return new ResponseEntity<>(response,HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ClientesResponse> putClientes (@PathVariable("id")UUID id,
-                                                   @RequestBody ClientesRequest clientesRequest){
-        logger.info("m=putClientes - status=start " + id);
+                                                         @RequestBody ClientesRequest clientesRequest,
+                                                         @RequestHeader(value = "Partner")String Partner){
+        logger.info("m=putClientes - status=start " + id + " " + Partner);
         Clientes clientesUpdate = service.update(new Clientes()
                 .withBuilderId(id)
                 .withBuilderBairro(clientesRequest.getBairro())
@@ -103,7 +105,7 @@ public class RastreamentoController {
                 .withBuilderNumero_logradouro(clientesUpdate.getNumero_logradouro())
                 .withBuilderRua(clientesUpdate.getRua())
                 .withBuilderTelefone(clientesUpdate.getTelefone());
-        logger.info("m=putClientes - status=finish " + id);
+        logger.info("m=putClientes - status=finish " + id + " " + Partner);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
