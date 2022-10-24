@@ -4,6 +4,7 @@ import com.example.rastreamento.model.Clientes;
 import com.example.rastreamento.model.ClientesRequest;
 import com.example.rastreamento.model.ClientesResponse;
 import com.example.rastreamento.service.ClientesService;
+import com.example.rastreamento.utils.ClientesUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,8 +61,9 @@ public class RastreamentoController {
 
    @PostMapping
     public ResponseEntity<ClientesResponse> postCarro(@RequestBody ClientesRequest clientesRequest,
-                                                      @RequestHeader(value = "Partner")String Partner){
-       logger.info("m=postClientes - status=start " + Partner);
+                                                      @RequestHeader String partner) throws Exception {
+       ClientesUtils.validatedHeader(partner);
+       logger.info("m=postClientes - status=start " + partner);
         Clientes clientes = service.save(new Clientes()
                 .withBuilderId(UUID.randomUUID())
                 .withBuilderBairro(clientesRequest.getBairro())
@@ -79,15 +81,16 @@ public class RastreamentoController {
                 .withBuilderNumero_logradouro(clientes.getNumero_logradouro())
                 .withBuilderRua(clientes.getRua())
                 .withBuilderTelefone(clientes.getTelefone());
-       logger.info("m=postClientes - status=finish " + Partner);
+       logger.info("m=postClientes - status=finish " + partner);
         return new ResponseEntity<>(response,HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ClientesResponse> putClientes (@PathVariable("id")UUID id,
                                                          @RequestBody ClientesRequest clientesRequest,
-                                                         @RequestHeader(value = "Partner")String Partner){
-        logger.info("m=putClientes - status=start " + id + " " + Partner);
+                                                         @RequestHeader(value = "Partner")String partner) throws Exception {
+        ClientesUtils.validatedHeader(partner);
+        logger.info("m=putClientes - status=start " + id + " " + partner);
         Clientes clientesUpdate = service.update(new Clientes()
                 .withBuilderId(id)
                 .withBuilderBairro(clientesRequest.getBairro())
@@ -105,7 +108,7 @@ public class RastreamentoController {
                 .withBuilderNumero_logradouro(clientesUpdate.getNumero_logradouro())
                 .withBuilderRua(clientesUpdate.getRua())
                 .withBuilderTelefone(clientesUpdate.getTelefone());
-        logger.info("m=putClientes - status=finish " + id + " " + Partner);
+        logger.info("m=putClientes - status=finish " + id + " " + partner);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
