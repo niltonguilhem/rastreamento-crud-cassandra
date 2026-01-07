@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -59,8 +60,8 @@ public class RastreamentoController {
 
     }
 
-   @PostMapping
-    public ResponseEntity<ClientesResponse> postCarro(@RequestBody ClientesRequest clientesRequest,
+    @PostMapping
+    public ResponseEntity<ClientesResponse> postCarro(@Valid @RequestBody ClientesRequest clientesRequest,
                                                       @RequestHeader String partner) throws Exception {
        ClientesUtils.validatedHeader(partner);
        logger.info("m=postClientes - status=start " + partner);
